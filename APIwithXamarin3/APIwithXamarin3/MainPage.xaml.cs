@@ -96,6 +96,7 @@ namespace APIwithXamarin3
             // Layout setting
             Content = new StackLayout
             {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
                 Children =
                 {
                     BoxLine,
