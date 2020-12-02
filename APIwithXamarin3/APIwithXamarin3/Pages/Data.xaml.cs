@@ -19,8 +19,8 @@ namespace APIwithXamarin3.Pages
         public int recovered { get; set; }
         public int deaths { get; set; }
         public int confirmed { get; set; }
-        //public DateTime lastChecked { get; set; }
-        //public DateTime lastReported { get; set; }
+        public DateTime lastChecked { get; set; }
+        public DateTime lastReported { get; set; }
         public string location { get; set; }
     }
 }

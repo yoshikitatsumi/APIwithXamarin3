@@ -16,9 +16,9 @@ namespace APIwithXamarin3.Pages
         {
             InitializeComponent();
         }
-        //public bool error { get; set; }
-        //public int statusCode { get; set; }
-        //public string message { get; set; }
+        public bool error { get; set; }
+        public int statusCode { get; set; }
+        public string message { get; set; }
         public Data data { get; set; }
     }
 }

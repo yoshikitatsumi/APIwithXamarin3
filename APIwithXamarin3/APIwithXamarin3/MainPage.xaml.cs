@@ -1,4 +1,5 @@
 ﻿using APIwithXamarin3.Pages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,18 +14,42 @@ namespace APIwithXamarin3
     public partial class MainPage : ContentPage
     {
         CovidAPI CAPI;
-        Label data = new Label();
-        Label message = new Label();
-        Entry country = new Entry();
-        Label deaths = new Label();
-        Label recovered = new Label();
-        Label confirmed = new Label();
+        Label data = new Label
+        {
+            FontSize = 15
+        };
+        Entry country = new Entry
+        {
+            FontSize = 20,
+            HorizontalOptions = LayoutOptions.FillAndExpand,
+            VerticalOptions = LayoutOptions.Center,
+        };
+        Label deaths = new Label
+        {
+            FontSize = 20,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+        };
+        Label recovered = new Label
+        {
+            FontSize = 20,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+        };
+        Label confirmed = new Label
+        {
+            FontSize = 20,
+            HorizontalOptions = LayoutOptions.Center,
+            VerticalOptions = LayoutOptions.Center,
+        };
 
         public MainPage()
         {
             InitializeComponent();
 
             CAPI = new CovidAPI();
+
+
 
             // Color line.
             BoxView BoxLine = new BoxView
@@ -37,21 +62,32 @@ namespace APIwithXamarin3
             {
                 Text = "Welcome to Covid-19 Data!",
                 TextColor = Color.Blue,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.Center,
                 FontSize = 25
             };
 
             // Color line.
-            BoxView BoxLine2 = new BoxView
+            //BoxView BoxLine2 = new BoxView
+            //{
+            //    Color = Color.DarkGreen
+            //};
+
+            // Country choice
+            Label choice = new Label
             {
-                Color = Color.DarkGreen
+                Text = "Please put country name below!",
+                TextColor = Color.Blue,
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                VerticalOptions = LayoutOptions.Center,
+                FontSize = 25
             };
+            country.TextChanged += Country_TextChanged;
 
             // Data button as btnData
             Button btnData = new Button
             {
-                Text = "Show original data!",
+                Text = "Response from Data Base",
                 FontSize = 25,
                 TextColor = Color.DarkCyan
             };
@@ -101,7 +137,8 @@ namespace APIwithXamarin3
                 {
                     BoxLine,
                     message,
-                    BoxLine2,
+                    //BoxLine2,
+                    choice,
                     country,
                     btnData,
                     data,
@@ -121,7 +158,18 @@ namespace APIwithXamarin3
                     }
                 }
             };
+            //ScrollView scrollView = new ScrollView { Content = new StackLayout()};
 
+            //Content = scrollView;
+        }
+
+        // When new country name input, all datas are back to blank.
+        private void Country_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            data.Text = "";
+            deaths.Text = "";
+            recovered.Text = "";
+            confirmed.Text = "";
         }
 
         private async void BtnData_Clicked(object sender, EventArgs e)
@@ -141,7 +189,8 @@ namespace APIwithXamarin3
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                data.Text = body;
+                var MyData = JsonConvert.DeserializeObject<Root>(body);
+                data.Text = MyData.message;
             }
         }
 
