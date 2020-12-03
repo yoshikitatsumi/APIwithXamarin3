@@ -114,6 +114,15 @@ namespace APIwithXamarin3
             };
             btnConfirmed.Clicked += BtnConfirmed_Clicked;
 
+            // Exit button as btnExit
+            Button btnExit = new Button
+            {
+                Text = "Exit",
+                FontSize = 25,
+                TextColor = Color.Black
+            };
+            btnExit.Clicked += BtnExit_Clicked;
+
             // Layout setting
             Content = new StackLayout
             {
@@ -136,11 +145,15 @@ namespace APIwithXamarin3
                             recovered,
                             btnConfirmed,
                             confirmed,
+                            btnExit,
                         }
                     },
                     BoxLine2,
                 }
             };
+            //ScrollView scrollView = new ScrollView();
+
+            //Content = scrollView;
         }
 
         // When new country name input, all datas are back to blank.
@@ -184,18 +197,26 @@ namespace APIwithXamarin3
         {
             int output = await CAPI.ReturnDeaths(country.Text);
             deaths.Text = output.ToString();
+            ((Button)sender).IsEnabled = false;
         }
 
         private async void BtnRecovered_Clicked(object sender, EventArgs e)
         {
             int output = await CAPI.ReturnRecovered(country.Text);
             recovered.Text = output.ToString();
+            ((Button)sender).IsEnabled = false;
         }
 
         private async void BtnConfirmed_Clicked(object sender, EventArgs e)
         {
             int output = await CAPI.ReturnConfirmed(country.Text);
             confirmed.Text = output.ToString();
+            ((Button)sender).IsEnabled = false;
+        }
+
+        private void BtnExit_Clicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 }

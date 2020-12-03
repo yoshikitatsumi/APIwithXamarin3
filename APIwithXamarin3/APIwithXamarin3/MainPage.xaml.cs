@@ -74,13 +74,13 @@ namespace APIwithXamarin3
             btnExit.Clicked += BtnExit_Clicked;
 
             // SubPage button as btnSub
-            Button btnSub = new Button
-            {
-                Text = "Sub Page",
-                FontSize = 25,
-                TextColor = Color.Red
-            };
-            btnSub.Clicked += BtnSub_Clicked;
+            //Button btnSub = new Button
+            //{
+            //    Text = "Sub Page",
+            //    FontSize = 25,
+            //    TextColor = Color.Red
+            //};
+            //btnSub.Clicked += BtnSub_Clicked;
 
             // Layout setting
             Content = new StackLayout
@@ -94,7 +94,7 @@ namespace APIwithXamarin3
                     btnCList,
                     btnMap,
                     btnExit,
-                    btnSub,
+                    //btnSub,
                 }
             };
         }
@@ -115,9 +115,9 @@ namespace APIwithXamarin3
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
 
-        private void BtnSub_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PushAsync(new SubPage());
-        }
+        //private void BtnSub_Clicked(object sender, EventArgs e)
+        //{
+        //    Navigation.PushAsync(new SubPage());
+        //}
     }
 }
