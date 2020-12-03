@@ -8,40 +8,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace APIwithXamarin3
 {
     public partial class MainPage : ContentPage
     {
         CovidAPI CAPI;
-        Label data = new Label
-        {
-            FontSize = 15
-        };
-        Entry country = new Entry
-        {
-            FontSize = 20,
-            HorizontalOptions = LayoutOptions.FillAndExpand,
-            VerticalOptions = LayoutOptions.Center,
-        };
-        Label deaths = new Label
-        {
-            FontSize = 20,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-        };
-        Label recovered = new Label
-        {
-            FontSize = 20,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-        };
-        Label confirmed = new Label
-        {
-            FontSize = 20,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-        };
 
         public MainPage()
         {
@@ -49,12 +22,11 @@ namespace APIwithXamarin3
 
             CAPI = new CovidAPI();
 
-
-
             // Color line.
             BoxView BoxLine = new BoxView
             {
-                Color = Color.DarkGreen
+                Color = Color.DarkGreen,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 
             // Welcome message
@@ -64,61 +36,33 @@ namespace APIwithXamarin3
                 TextColor = Color.Blue,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 VerticalOptions = LayoutOptions.Center,
-                FontSize = 25
+                FontSize = 29
             };
 
             // Color line.
-            //BoxView BoxLine2 = new BoxView
-            //{
-            //    Color = Color.DarkGreen
-            //};
-
-            // Country choice
-            Label choice = new Label
+            BoxView BoxLine2 = new BoxView
             {
-                Text = "Please put country name below!",
-                TextColor = Color.Blue,
-                HorizontalOptions = LayoutOptions.CenterAndExpand,
-                VerticalOptions = LayoutOptions.Center,
-                FontSize = 25
+                Color = Color.DarkGreen,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            country.TextChanged += Country_TextChanged;
 
-            // Data button as btnData
-            Button btnData = new Button
+            // CountryList button as btnCList
+            Button btnCList = new Button
             {
-                Text = "Response from Data Base",
+                Text = "Country List",
                 FontSize = 25,
                 TextColor = Color.DarkCyan
             };
-            btnData.Clicked += BtnData_Clicked;
+            btnCList.Clicked += BtnCList_Clicked;
 
-            // Deaths button as btnDeaths
-            Button btnDeaths = new Button
+            // Map button as btnMap
+            Button btnMap = new Button
             {
-                Text = "Deaths",
-                FontSize = 25,
-                TextColor = Color.Red
-            };
-            btnDeaths.Clicked += BtnDeaths_Clicked;
-
-            // Recovered button as btnRecovered
-            Button btnRecovered = new Button
-            {
-                Text = "Recovered",
+                Text = "Map",
                 FontSize = 25,
                 TextColor = Color.Blue
             };
-            btnRecovered.Clicked += BtnRecovered_Clicked;
-
-            // Confirmed button as btnConfirmed
-            Button btnConfirmed = new Button
-            {
-                Text = "Confirmed",
-                FontSize = 25,
-                TextColor = Color.Green
-            };
-            btnConfirmed.Clicked += BtnConfirmed_Clicked;
+            btnMap.Clicked += BtnMap_Clicked;
 
             // Exit button as btnExit
             Button btnExit = new Button
@@ -129,6 +73,15 @@ namespace APIwithXamarin3
             };
             btnExit.Clicked += BtnExit_Clicked;
 
+            // SubPage button as btnSub
+            Button btnSub = new Button
+            {
+                Text = "Sub Page",
+                FontSize = 25,
+                TextColor = Color.Red
+            };
+            btnSub.Clicked += BtnSub_Clicked;
+
             // Layout setting
             Content = new StackLayout
             {
@@ -137,84 +90,34 @@ namespace APIwithXamarin3
                 {
                     BoxLine,
                     message,
-                    //BoxLine2,
-                    choice,
-                    country,
-                    btnData,
-                    data,
-                    new StackLayout
-                    {
-                        HorizontalOptions = LayoutOptions.Center,
-                        Children =
-                        {
-                            btnDeaths,
-                            deaths,
-                            btnRecovered,
-                            recovered,
-                            btnConfirmed,
-                            confirmed,
-                            btnExit,
-                        }
-                    }
+                    BoxLine2,
+                    btnCList,
+                    btnMap,
+                    btnExit,
+                    btnSub,
                 }
             };
-            //ScrollView scrollView = new ScrollView { Content = new StackLayout()};
-
-            //Content = scrollView;
         }
 
-        // When new country name input, all datas are back to blank.
-        private void Country_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void BtnCList_Clicked(object sender, EventArgs e)
         {
-            data.Text = "";
-            deaths.Text = "";
-            recovered.Text = "";
-            confirmed.Text = "";
+            Navigation.PushAsync(new CountryListPage());
         }
 
-        private async void BtnData_Clicked(object sender, EventArgs e)
+        private void BtnMap_Clicked(object sender, EventArgs e)
         {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri("https://covid-19-coronavirus-statistics.p.rapidapi.com/v1/total?country=" + country.Text),
-                Headers =
-            {
-                { "x-rapidapi-key", "7ab2f6eae9msh7c5a0dc76fd6e4dp120a5fjsn68768a5398bd" },
-                { "x-rapidapi-host", "covid-19-coronavirus-statistics.p.rapidapi.com" },
-            },
-            };
-            using (var response = await client.SendAsync(request))
-            {
-                response.EnsureSuccessStatusCode();
-                var body = await response.Content.ReadAsStringAsync();
-                var MyData = JsonConvert.DeserializeObject<Root>(body);
-                data.Text = MyData.message;
-            }
-        }
-
-        private async void BtnDeaths_Clicked(object sender, EventArgs e)
-        {
-            int output = await CAPI.ReturnDeaths(country.Text);
-            deaths.Text = output.ToString();
-        }
-
-        private async void BtnRecovered_Clicked(object sender, EventArgs e)
-        {
-            int output = await CAPI.ReturnRecovered(country.Text);
-            recovered.Text = output.ToString();
-        }
-
-        private async void BtnConfirmed_Clicked(object sender, EventArgs e)
-        {
-            int output = await CAPI.ReturnConfirmed(country.Text);
-            confirmed.Text = output.ToString();
+            Navigation.PushAsync(new MapPage());
         }
 
         private void BtnExit_Clicked(object sender, EventArgs e)
         {
             System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
+
+        private void BtnSub_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SubPage());
         }
     }
 }
