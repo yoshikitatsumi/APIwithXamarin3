@@ -14,29 +14,35 @@ namespace APIwithXamarin3
     public partial class SubPage : ContentPage
     {
         CovidAPI CAPI;
+
+        // Setting labels and entry.
         Label data = new Label
         {
             FontSize = 15,
             TextColor = Color.Blue
         };
+
         Entry country = new Entry
         {
             FontSize = 20,
             HorizontalOptions = LayoutOptions.FillAndExpand,
             VerticalOptions = LayoutOptions.Center,
         };
+
         Label deaths = new Label
         {
             FontSize = 20,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
         };
+
         Label recovered = new Label
         {
             FontSize = 20,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
         };
+
         Label confirmed = new Label
         {
             FontSize = 20,
@@ -49,8 +55,6 @@ namespace APIwithXamarin3
             InitializeComponent();
 
             CAPI = new CovidAPI();
-
-
 
             // Color line.
             BoxView BoxLine = new BoxView
@@ -76,6 +80,7 @@ namespace APIwithXamarin3
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 
+            // When country entry changed, set blank to all labels.
             country.TextChanged += Country_TextChanged;
 
             // Data button as btnData
@@ -152,7 +157,6 @@ namespace APIwithXamarin3
                 }
             };
             //ScrollView scrollView = new ScrollView();
-
             //Content = scrollView;
         }
 
@@ -165,6 +169,7 @@ namespace APIwithXamarin3
             confirmed.Text = "";
         }
 
+        // Getting data and showing message.
         private async void BtnData_Clicked(object sender, EventArgs e)
         {
             var client = new HttpClient();
@@ -197,21 +202,21 @@ namespace APIwithXamarin3
         {
             int output = await CAPI.ReturnDeaths(country.Text);
             deaths.Text = output.ToString();
-            ((Button)sender).IsEnabled = false;
+            //((Button)sender).IsEnabled = false;
         }
 
         private async void BtnRecovered_Clicked(object sender, EventArgs e)
         {
             int output = await CAPI.ReturnRecovered(country.Text);
             recovered.Text = output.ToString();
-            ((Button)sender).IsEnabled = false;
+            //((Button)sender).IsEnabled = false;
         }
 
         private async void BtnConfirmed_Clicked(object sender, EventArgs e)
         {
             int output = await CAPI.ReturnConfirmed(country.Text);
             confirmed.Text = output.ToString();
-            ((Button)sender).IsEnabled = false;
+            //((Button)sender).IsEnabled = false;
         }
 
         private void BtnExit_Clicked(object sender, EventArgs e)

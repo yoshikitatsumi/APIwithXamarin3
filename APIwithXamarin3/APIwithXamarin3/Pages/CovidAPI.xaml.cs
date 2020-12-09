@@ -35,7 +35,7 @@ namespace APIwithXamarin3.Pages
             };
             using (var response = await client.SendAsync(request))
             {
-                Console.WriteLine("**********************************");
+                //Console.WriteLine("**********************************");
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
                 //richTextBox1.Text = body;
@@ -60,7 +60,7 @@ namespace APIwithXamarin3.Pages
             };
             using (var response = await client.SendAsync(request))
             {
-                Console.WriteLine("**********************************");
+                //Console.WriteLine("**********************************");
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
                 //richTextBox1.Text = body;
@@ -85,7 +85,7 @@ namespace APIwithXamarin3.Pages
             };
             using (var response = await client.SendAsync(request))
             {
-                Console.WriteLine("**********************************");
+                //Console.WriteLine("**********************************");
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
                 //richTextBox1.Text = body;
